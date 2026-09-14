@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delivery Exception Management Dashboard | GreyAtom Logistics</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Top Navigation / Application Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="3" width="15" height="13"></rect>
+            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1 class="brand-title">GreyAtom Logistics Pvt. Ltd.</h1>
+          <p class="brand-subtitle">Internal Operations Tools &bull; Delivery Exception Management Dashboard <span class="badge-tag">v1.0</span></p>
+        </div>
+      </div>
+      <div class="header-status">
+        <span class="pulse-indicator"></span>
+        <span class="status-title">Operations Console Active</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-container">
+
+    <!-- KPI Summary Metrics (Bonus Feature) -->
+    <section class="metrics-grid" aria-label="Exception Metrics Overview">
+      <div class="metric-card card-total">
+        <div class="metric-icon-box icon-total">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </div>
+        <div class="metric-content">
+          <span class="metric-title">Total Exceptions</span>
+          <span class="metric-number" id="totalCount">0</span>
+        </div>
+      </div>
+
+      <div class="metric-card card-open">
+        <div class="metric-icon-box icon-open">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <div class="metric-content">
+          <span class="metric-title">Open Issues</span>
+          <span class="metric-number" id="openCount">0</span>
+        </div>
+      </div>
+
+      <div class="metric-card card-resolved">
+        <div class="metric-icon-box icon-resolved">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <div class="metric-content">
+          <span class="metric-title">Resolved Issues</span>
+          <span class="metric-number" id="resolvedCount">0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Operational Dashboard Layout -->
+    <div class="dashboard-grid">
+
+      <!-- Left Column: Delivery Exception Form -->
+      <section class="form-column">
+        <div class="card form-card">
+          <div class="card-header">
+            <h2 class="card-title">Record Delivery Exception</h2>
+            <p class="card-description">Log undelivered packages, customer unavailable reports, and transit issues.</p>
+          </div>
+
+          <form id="exceptionForm" class="dashboard-form" novalidate>
+            <!-- Delivery ID -->
+            <div class="form-group">
+              <label for="deliveryId" class="form-label">
+                Delivery ID <span class="required-asterisk">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="deliveryId" 
+                name="deliveryId" 
+                class="form-input" 
+                placeholder="e.g., DEL-78041"
+                autocomplete="off"
+              >
+              <span class="field-error" id="deliveryIdError"></span>
+            </div>
+
+            <!-- Customer Name -->
+            <div class="form-group">
+              <label for="customerName" class="form-label">
+                Customer Name <span class="required-asterisk">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="customerName" 
+                name="customerName" 
+                class="form-input" 
+                placeholder="e.g., Jane Doe"
+                autocomplete="off"
+              >
+              <span class="field-error" id="customerNameError"></span>
+            </div>
+
+            <!-- Issue Type Dropdown -->
+            <div class="form-group">
+              <label for="issueType" class="form-label">
+                Issue Type <span class="required-asterisk">*</span>
+              </label>
+              <select id="issueType" name="issueType" class="form-select">
+                <option value="">-- Select Issue Type --</option>
+                <option value="Address Not Found">Address Not Found</option>
+                <option value="Customer Not Available">Customer Not Available</option>
+                <option value="Payment Issue">Payment Issue</option>
+                <option value="Package Damaged">Package Damaged</option>
+              </select>
+              <span class="field-error" id="issueTypeError"></span>
+            </div>
+
+            <!-- Priority Radio Buttons -->
+            <div class="form-group">
+              <label class="form-label">
+                Priority <span class="required-asterisk">*</span>
+              </label>
+              <div class="priority-options">
+                <label class="priority-label priority-label-low">
+                  <input type="radio" name="priority" value="Low" class="priority-radio">
+                  <span class="priority-badge-radio">Low</span>
+                </label>
+                <label class="priority-label priority-label-medium">
+                  <input type="radio" name="priority" value="Medium" class="priority-radio">
+                  <span class="priority-badge-radio">Medium</span>
+                </label>
+                <label class="priority-label priority-label-high">
+                  <input type="radio" name="priority" value="High" class="priority-radio">
+                  <span class="priority-badge-radio">High</span>
+                </label>
+              </div>
+              <span class="field-error" id="priorityError"></span>
+            </div>
+
+            <!-- Notes (Optional) -->
+            <div class="form-group">
+              <label for="notes" class="form-label">
+                Operational Notes <span class="optional-label">(Optional)</span>
+              </label>
+              <textarea 
+                id="notes" 
+                name="notes" 
+                class="form-textarea" 
+                rows="3" 
+                placeholder="Additional details, landmark instructions, or customer call feedback..."
+              ></textarea>
+            </div>
+
+            <!-- Form Global Alert Banner (if needed) -->
+            <div id="formAlert" class="form-alert" style="display: none;"></div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitBtn" class="btn btn-primary btn-submit">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>Submit Exception</span>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Right Column: Exceptions Dashboard Table & Filters -->
+      <section class="table-column">
+        <div class="card table-card">
+          <!-- Toolbar & Filter Controls -->
+          <div class="table-header">
+            <div class="table-header-info">
+              <h2 class="card-title">Exceptions Dashboard</h2>
+              <p class="card-description">View, filter, resolve, or manage reported delivery failures in real time.</p>
+            </div>
+
+            <!-- Filters (Operations Requirement) -->
+            <div class="filter-bar">
+              <div class="filter-group">
+                <label for="filterType" class="filter-label">Issue Type:</label>
+                <select id="filterType" class="filter-select">
+                  <option value="ALL">All Issue Types</option>
+                  <option value="Address Not Found">Address Not Found</option>
+                  <option value="Customer Not Available">Customer Not Available</option>
+                  <option value="Payment Issue">Payment Issue</option>
+                  <option value="Package Damaged">Package Damaged</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label for="filterStatus" class="filter-label">Status:</label>
+                <select id="filterStatus" class="filter-select">
+                  <option value="ALL">All Statuses</option>
+                  <option value="Open">Open</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table Wrapper -->
+          <div class="table-container">
+            <table id="exceptionsTable" class="exceptions-table">
+              <thead>
+                <tr>
+                  <th class="col-id">Delivery ID</th>
+                  <th class="col-customer">Customer Name</th>
+                  <th class="col-type">Issue Type</th>
+                  <th class="col-priority">Priority</th>
+                  <th class="col-status">Status</th>
+                  <th class="col-actions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="exceptionsTableBody">
+                <!-- Dynamically populated or rendered via script.js -->
+              </tbody>
+            </table>
+
+            <!-- Empty State Display -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+              <div class="empty-state-icon">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+              <h3 class="empty-state-heading">No exceptions found</h3>
+              <p class="empty-state-text">No delivery exception records match the current filter selection.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
